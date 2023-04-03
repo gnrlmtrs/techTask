@@ -1,7 +1,6 @@
 package test.futures.trade;
 
 import io.restassured.response.Response;
-import org.apache.logging.log4j.core.util.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

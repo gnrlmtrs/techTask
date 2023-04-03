@@ -1,10 +1,8 @@
 package test.futures.order;
 
-import io.restassured.internal.path.json.mapping.JsonObjectDeserializer;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
-import org.apache.logging.log4j.core.util.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,7 +11,6 @@ import test.BaseTest;
 import test.Constants;
 import request.SendingRequest;
 import utils.TestDataReader;
-
 import java.util.List;
 
 public class OrdersTest extends BaseTest {

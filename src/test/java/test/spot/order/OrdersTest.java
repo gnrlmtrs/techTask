@@ -1,6 +1,8 @@
 package test.spot.order;
 
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import io.restassured.response.ResponseBody;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,6 +11,7 @@ import test.BaseTest;
 import test.Constants;
 import request.SendingRequest;
 import utils.TestDataReader;
+import java.util.List;
 
 public class OrdersTest extends BaseTest {
 
@@ -25,6 +28,13 @@ public class OrdersTest extends BaseTest {
         Response response = SendingRequest.createPostRequest(parameters, TestDataReader.getTestData("CREATE_NEW_ORDER_URI"));
         Assertions.assertEquals(response.getStatusCode(), Constants.CORRECT_STATUS_CODE,
                 "Status code is equal to" + Constants.CORRECT_STATUS_CODE);
+        ResponseBody body = response.getBody();
+        Assertions.assertEquals(symbol, body.jsonPath().get("symbol"), "Symbol is wrong");
+        Assertions.assertEquals(Double.parseDouble(price), Double.parseDouble(body.jsonPath().get("price")), "Price is wrong");
+        Assertions.assertEquals(side, body.jsonPath().get("side"), "Side is wrong");
+        Assertions.assertEquals(type, body.jsonPath().get("type"), "Type is wrong");
+        Assertions.assertEquals(timeInForce, body.jsonPath().get("timeInForce"), "Time in force is wrong");
+        Assertions.assertEquals(Double.parseDouble(quantity), Double.parseDouble(body.jsonPath().get("origQty")), "Quantity is wrong");
     }
 
     @ParameterizedTest
@@ -32,8 +42,13 @@ public class OrdersTest extends BaseTest {
     @CsvFileSource(resources = "/testData/symbols.csv")
     public void cancelAllOpenedOrdersTest(String symbol){
         parameters.put("symbol", symbol);
-        Response response = SendingRequest.getHttpRequestWithParameters(TestDataReader.getTestData("CANCEL_OPENED_ORDERS_URI"), parameters);
+        Response response = SendingRequest.createDeleteRequest(parameters, TestDataReader.getTestData("CANCEL_OPENED_ORDERS_URI"));
         Assertions.assertEquals(response.getStatusCode(), Constants.CORRECT_STATUS_CODE,
                 "Status code is equal to" + Constants.CORRECT_STATUS_CODE);
+        JsonPath jsonPath = new JsonPath(response.getBody().asString());
+        List<String> symbols = jsonPath.getList("symbol");
+        for (String expectedSymbol : symbols) {
+            Assertions.assertEquals(symbol, expectedSymbol, "Symbol is wrong");
+        }
     }
 }

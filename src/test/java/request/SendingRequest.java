@@ -5,7 +5,6 @@ import io.restassured.response.Response;
 import logger.Log;
 import utils.ParamsTransformation;
 import utils.TestDataReader;
-
 import java.util.HashMap;
 
 public class SendingRequest {
