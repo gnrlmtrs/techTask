@@ -28,4 +28,12 @@ public class SendingRequest {
                 .then()
                 .extract().response();
     }
+
+    public static Response createDeleteRequest(HashMap<String, String> parameters, String partOfUri){
+        Log.info("Sending delete request to: " + partOfUri);
+        return RestAssured.given()
+                .header("X-MBX-APIKEY", TestDataReader.getTestData("API_KEY"))
+                .and()
+                .delete(ParamsTransformation.getFinalURL(parameters, partOfUri));
+    }
 }

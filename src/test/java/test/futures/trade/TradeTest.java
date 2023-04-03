@@ -1,6 +1,7 @@
 package test.futures.trade;
 
 import io.restassured.response.Response;
+import org.apache.logging.log4j.core.util.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,5 +22,7 @@ public class TradeTest extends BaseTest {
         Response response = SendingRequest.createPostRequest(parameters, TestDataReader.getTestData("CHANGE_LEVERAGE_URI"));
         Assertions.assertEquals(response.getStatusCode(), Constants.CORRECT_STATUS_CODE,
                 "Status code is equal to" + Constants.CORRECT_STATUS_CODE);
+        Assertions.assertEquals(symbol, response.getBody().jsonPath().get("symbol"), "Symbol is wrong");
+        Assertions.assertEquals(leverage, response.getBody().jsonPath().get("leverage"), "Leverage is wrong");
     }
 }
