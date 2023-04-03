@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import test.BaseTest;
 import test.Constants;
-import utils.ApiUtils;
+import request.SendingRequest;
 import utils.TestDataReader;
 
 public class AccountTest extends BaseTest{
@@ -14,7 +14,7 @@ public class AccountTest extends BaseTest{
     @Test
     @DisplayName("Test: Get information about futures account")
     public void getAccountBalanceTest(){
-        Response response = ApiUtils.getHttpRequestWithParameters(TestDataReader.getTestData("GET_BALANCE_URI"), parameters);
+        Response response = SendingRequest.getHttpRequestWithParameters(TestDataReader.getTestData("GET_BALANCE_URI"), parameters);
         Assertions.assertEquals(response.getStatusCode(), Constants.CORRECT_STATUS_CODE,
                 "Status code is equal to" + Constants.CORRECT_STATUS_CODE);
     }

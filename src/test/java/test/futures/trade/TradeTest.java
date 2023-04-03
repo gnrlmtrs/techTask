@@ -7,7 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import test.BaseTest;
 import test.Constants;
-import utils.ApiUtils;
+import request.SendingRequest;
 import utils.TestDataReader;
 
 public class TradeTest extends BaseTest {
@@ -18,7 +18,7 @@ public class TradeTest extends BaseTest {
     public void changeLeverageTest(String symbol, String leverage){
         parameters.put("symbol", symbol);
         parameters.put("leverage", leverage);
-        Response response = ApiUtils.createPostRequest(parameters, TestDataReader.getTestData("CHANGE_LEVERAGE_URI"));
+        Response response = SendingRequest.createPostRequest(parameters, TestDataReader.getTestData("CHANGE_LEVERAGE_URI"));
         Assertions.assertEquals(response.getStatusCode(), Constants.CORRECT_STATUS_CODE,
                 "Status code is equal to" + Constants.CORRECT_STATUS_CODE);
     }

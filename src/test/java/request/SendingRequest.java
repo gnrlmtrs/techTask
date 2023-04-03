@@ -1,11 +1,14 @@
-package utils;
+package request;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import logger.Log;
+import utils.ParamsTransformation;
+import utils.TestDataReader;
+
 import java.util.HashMap;
 
-public class ApiUtils {
+public class SendingRequest {
 
     public static Response getHttpRequestWithParameters(String partOfUri, HashMap<String, String> parameters){
         Log.info("Sending get request with parameters to: " + partOfUri);

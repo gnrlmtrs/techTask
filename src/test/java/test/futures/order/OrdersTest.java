@@ -7,7 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import test.BaseTest;
 import test.Constants;
-import utils.ApiUtils;
+import request.SendingRequest;
 import utils.TestDataReader;
 
 public class OrdersTest extends BaseTest {
@@ -22,7 +22,7 @@ public class OrdersTest extends BaseTest {
         parameters.put("timeInForce", timeInForce);
         parameters.put("quantity", quantity);
         parameters.put("price", price);
-        Response response = ApiUtils.createPostRequest(parameters, TestDataReader.getTestData("CREATE_NEW_ORDER_URI"));
+        Response response = SendingRequest.createPostRequest(parameters, TestDataReader.getTestData("CREATE_NEW_ORDER_URI"));
         Assertions.assertEquals(response.getStatusCode(), Constants.CORRECT_STATUS_CODE,
                 "Status code is equal to" + Constants.CORRECT_STATUS_CODE);
     }
@@ -32,7 +32,7 @@ public class OrdersTest extends BaseTest {
     @CsvFileSource(resources = "/testData/symbols.csv")
     public void getAllOrdersInfoTest(String symbol){
         parameters.put("symbol", symbol);
-        Response response = ApiUtils.getHttpRequestWithParameters(TestDataReader.getTestData("ALL_ORDERS_INFO_URI"), parameters);
+        Response response = SendingRequest.getHttpRequestWithParameters(TestDataReader.getTestData("ALL_ORDERS_INFO_URI"), parameters);
         Assertions.assertEquals(response.getStatusCode(), Constants.CORRECT_STATUS_CODE,
                 "Status code is equal to" + Constants.CORRECT_STATUS_CODE);
     }
@@ -42,7 +42,7 @@ public class OrdersTest extends BaseTest {
     @CsvFileSource(resources = "/testData/symbols.csv")
     public void deleteAllOpenedOrdersTest(String symbol){
         parameters.put("symbol", symbol);
-        Response response = ApiUtils.getHttpRequestWithParameters(TestDataReader.getTestData("DELETE_ALL_OPENED_ORDERS_URI"), parameters);
+        Response response = SendingRequest.getHttpRequestWithParameters(TestDataReader.getTestData("DELETE_ALL_OPENED_ORDERS_URI"), parameters);
         Assertions.assertEquals(response.getStatusCode(), Constants.CORRECT_STATUS_CODE,
                 "Status code is equal to" + Constants.CORRECT_STATUS_CODE);
     }
