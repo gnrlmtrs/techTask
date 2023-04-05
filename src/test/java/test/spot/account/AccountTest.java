@@ -48,13 +48,20 @@ public class AccountTest extends BaseTest {
 
     @ParameterizedTest
     @DisplayName("Test: Get information about opened orders")
-    @CsvFileSource(resources = "/testData/creatingOrder.csv")
+    @CsvFileSource(resources = "/testData/symbols.csv")
     public void getInformationAboutOpenedOrdersTest(String symbol){
+        parameters.put("symbol", symbol);
         Response response = SendingRequest.getHttpRequestWithParameters(TestDataReader.getTestData("CURRENT_OPENED_ORDERS_URI"), parameters);
-        softAssertions.assertThat(response.getBody()).as("Body is null").isNotNull();
-        Assertions.assertEquals(response.getStatusCode(), Constants.CORRECT_STATUS_CODE,
-                "Status code is equal to" + Constants.CORRECT_STATUS_CODE);
-        softAssertions.assertThat(response.getBody().jsonPath().get("symbol").toString()).isEqualTo(symbol);
-        softAssertions.assertAll();
+        softAssertions.assertThat(response.getStatusCode())
+                .as("Status code is not correct")
+                .isEqualTo(Constants.CORRECT_STATUS_CODE);
+        JsonPath jsonPath = new JsonPath(response.getBody().asString());
+        List<String> symbols = jsonPath.getList("symbol");
+
+        softAssertions.assertThat(symbols)
+                .as("There are no opened orders for symbol " + symbol)
+                .isNotEmpty()
+                .contains(symbol)
+                .allMatch(s -> s.equals(symbol));
     }
 }

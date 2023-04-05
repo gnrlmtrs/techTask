@@ -43,12 +43,16 @@ public class OrdersTest extends BaseTest {
     public void cancelAllOpenedOrdersTest(String symbol){
         parameters.put("symbol", symbol);
         Response response = SendingRequest.createDeleteRequest(parameters, TestDataReader.getTestData("CANCEL_OPENED_ORDERS_URI"));
-        Assertions.assertEquals(response.getStatusCode(), Constants.CORRECT_STATUS_CODE,
-                "Status code is equal to" + Constants.CORRECT_STATUS_CODE);
         JsonPath jsonPath = new JsonPath(response.getBody().asString());
+        softAssertions.assertThat(response.getStatusCode())
+                  .as("Status code is not correct")
+                  .isEqualTo(Constants.CORRECT_STATUS_CODE);
         List<String> symbols = jsonPath.getList("symbol");
-        for (String expectedSymbol : symbols) {
-            Assertions.assertEquals(symbol, expectedSymbol, "Symbol is wrong");
-        }
+
+        softAssertions.assertThat(symbols)
+                  .as("There are no opened orders for symbol " + symbol)
+                  .isNotEmpty()
+                  .contains(symbol)
+                  .allMatch(s -> s.equals(symbol));
     }
 }
